@@ -9,6 +9,7 @@
     "build": "node scripts/build-dist.js",
     "postinstall": "npm run build",
     "start": "node dist/server.js",
+    "seed": "node scripts/seed.js",
     "test": "node --test scripts/test-api.js"
   },
   "dependencies": {
