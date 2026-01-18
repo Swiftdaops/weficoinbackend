@@ -13,7 +13,7 @@ const envSchema = z.object({
   NODE_ENV: z.string().default('development'),
   PORT: z.coerce.number().default(5050),
   MONGODB_URI: z.string().min(1),
-  CHAIN_ID: z.coerce.number().default(11155111),
+  CHAIN_ID: z.coerce.number().default(1),
   RPC_URL: z.string().optional(),
   SIWE_DOMAIN: z.string().min(1),
   SIWE_ORIGIN: z.string().min(1),

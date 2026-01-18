@@ -1,17 +1,15 @@
 import { createPublicClient, http } from 'viem'
-import { mainnet, sepolia, polygonAmoy } from 'viem/chains'
+import { mainnet } from 'viem/chains'
 import { env } from './env.js'
 
 function getChain(chainId) {
-  switch (chainId) {
-    case mainnet.id:
-      return mainnet
-    case polygonAmoy.id:
-      return polygonAmoy
-    case sepolia.id:
-    default:
-      return sepolia
+  if (chainId !== mainnet.id) {
+    throw new Error(
+      `Unsupported CHAIN_ID=${chainId}. Only Ethereum mainnet (1) is supported.`
+    )
   }
+
+  return mainnet
 }
 
 export const chain = getChain(env.CHAIN_ID)

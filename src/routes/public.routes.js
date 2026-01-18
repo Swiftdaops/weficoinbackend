@@ -14,7 +14,7 @@ router.post(
   validateBody(
     z.object({
       walletAddress: z.string().min(3),
-      chainId: z.number().int(),
+      chainId: z.literal(1),
     })
   ),
   postSession

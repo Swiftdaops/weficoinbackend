@@ -43,7 +43,7 @@ async function main() {
     const walletAddress = randomAddress(1000 + i).toLowerCase()
     return {
       walletAddress,
-      chainId: env.CHAIN_ID || 11155111,
+      chainId: env.CHAIN_ID,
       connectedAt: new Date(now.getTime() - (i + 1) * 60_000),
       lastSeenAt: new Date(now.getTime() - i * 30_000),
     }
