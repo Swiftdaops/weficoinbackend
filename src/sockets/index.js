@@ -8,17 +8,29 @@ import { logger } from '../utils/logger.js'
 let adminIo = null
 
 export function initSockets(httpServer) {
-  const corsOrigin =
-    env.CORS_ORIGIN === '*'
-      ? true
-      : env.CORS_ORIGIN
-          .split(',')
-          .map((s) => s.trim())
-          .filter(Boolean)
+  const normalizeOrigin = (value) => {
+    if (!value) return value
+    return value.endsWith('/') ? value.slice(0, -1) : value
+  }
+
+  const corsAllowAny = env.CORS_ORIGIN === '*'
+  const corsAllowedOrigins = corsAllowAny
+    ? []
+    : env.CORS_ORIGIN
+        .split(',')
+        .map((s) => normalizeOrigin(s.trim()))
+        .filter(Boolean)
 
   const io = new Server(httpServer, {
     cors: {
-      origin: Array.isArray(corsOrigin) && corsOrigin.length === 1 ? corsOrigin[0] : corsOrigin,
+      origin: (origin, callback) => {
+        if (corsAllowAny) return callback(null, true)
+        if (!origin) return callback(null, true)
+
+        const normalized = normalizeOrigin(origin)
+        const ok = corsAllowedOrigins.includes(normalized)
+        return callback(null, ok)
+      },
       credentials: true,
     },
   })
