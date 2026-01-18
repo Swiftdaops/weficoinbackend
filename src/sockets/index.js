@@ -8,9 +8,17 @@ import { logger } from '../utils/logger.js'
 let adminIo = null
 
 export function initSockets(httpServer) {
+  const corsOrigin =
+    env.CORS_ORIGIN === '*'
+      ? true
+      : env.CORS_ORIGIN
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean)
+
   const io = new Server(httpServer, {
     cors: {
-      origin: env.CORS_ORIGIN === '*' ? true : env.CORS_ORIGIN,
+      origin: Array.isArray(corsOrigin) && corsOrigin.length === 1 ? corsOrigin[0] : corsOrigin,
       credentials: true,
     },
   })

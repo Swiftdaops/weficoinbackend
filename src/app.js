@@ -11,10 +11,18 @@ import { errorHandler } from './middlewares/errorHandler.middleware.js'
 export function createApp() {
   const app = express()
 
+  const corsOrigin =
+    env.CORS_ORIGIN === '*'
+      ? true
+      : env.CORS_ORIGIN
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean)
+
   app.use(helmet())
   app.use(
     cors({
-      origin: env.CORS_ORIGIN === '*' ? true : env.CORS_ORIGIN,
+      origin: Array.isArray(corsOrigin) && corsOrigin.length === 1 ? corsOrigin[0] : corsOrigin,
       credentials: true,
     })
   )
