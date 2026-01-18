@@ -1,4 +1,4 @@
-import { listWalletsWithBalances, listEvents, listTestResults } from '../services/admin.service.js'
+import { clearWalletSessions, listWalletsWithBalances, listEvents, listTestResults } from '../services/admin.service.js'
 import { verifyAllowance } from '../services/allowance.service.js'
 import { emitAdminEvent } from '../sockets/index.js'
 
@@ -22,4 +22,9 @@ export async function postVerifyAllowance(req, res) {
   const result = await verifyAllowance({ walletAddress, tokenAddress, spenderAddress })
   emitAdminEvent('testResult', result)
   return res.json({ ok: true, result })
+}
+
+export async function deleteWallets(_req, res) {
+  const result = await clearWalletSessions()
+  return res.json({ ok: true, deletedCount: result?.deletedCount ?? 0 })
 }

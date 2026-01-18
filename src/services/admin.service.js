@@ -78,3 +78,7 @@ export async function listEvents(limit = 200) {
 export async function listTestResults(limit = 200) {
   return TestResult.find({}).sort({ checkedAt: -1 }).limit(limit)
 }
+
+export async function clearWalletSessions() {
+  return WalletSession.deleteMany({})
+}
