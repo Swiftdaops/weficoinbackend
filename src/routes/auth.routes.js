@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { z } from 'zod'
-import { getNonce, postLogin, postLogout } from '../controllers/auth.controller.js'
+import { getNonce, postAdminLogin, postLogin, postLogout } from '../controllers/auth.controller.js'
 import { validateBody } from '../middlewares/validate.middleware.js'
 
 const router = Router()
@@ -16,6 +16,17 @@ router.post(
     })
   ),
   postLogin
+)
+
+router.post(
+  '/admin/login',
+  validateBody(
+    z.object({
+      email: z.string().email(),
+      password: z.string().min(1),
+    })
+  ),
+  postAdminLogin
 )
 
 router.post('/logout', postLogout)

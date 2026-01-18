@@ -32,3 +32,15 @@ export function signJwt(walletAddress, role) {
 export function signAdminJwt(walletAddress) {
   return signJwt(walletAddress, 'admin')
 }
+
+export function signAdminEmailJwt(email) {
+  return jwt.sign(
+    {
+      sub: email.toLowerCase(),
+      email: email.toLowerCase(),
+      role: 'admin',
+    },
+    env.JWT_SECRET,
+    { expiresIn: env.JWT_EXPIRES_IN }
+  )
+}

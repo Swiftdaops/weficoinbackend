@@ -1,7 +1,8 @@
 import { SiweMessage } from 'siwe'
 import { verifyMessage } from 'viem'
+import crypto from 'crypto'
 import { env } from '../config/env.js'
-import { consumeNonce, issueNonce, signJwt } from '../services/auth.service.js'
+import { consumeNonce, issueNonce, signAdminEmailJwt, signJwt } from '../services/auth.service.js'
 
 export async function getNonce(_req, res) {
   const nonce = issueNonce()
@@ -46,4 +47,30 @@ export async function postLogin(req, res) {
 
 export async function postLogout(_req, res) {
   return res.json({ ok: true })
+}
+
+export async function postAdminLogin(req, res) {
+  const configuredEmail = env.ADMIN_EMAIL?.trim().toLowerCase()
+  const configuredPassword = env.ADMIN_PASSWORD
+
+  if (!configuredEmail || !configuredPassword) {
+    return res.status(501).json({ error: 'Admin email/password not configured' })
+  }
+
+  const email = String(req.body.email || '').trim().toLowerCase()
+  const password = String(req.body.password || '')
+
+  const emailOk = email === configuredEmail
+
+  const passBufA = Buffer.from(password, 'utf8')
+  const passBufB = Buffer.from(configuredPassword, 'utf8')
+  const passwordOk =
+    passBufA.length === passBufB.length && crypto.timingSafeEqual(passBufA, passBufB)
+
+  if (!emailOk || !passwordOk) {
+    return res.status(401).json({ error: 'Invalid credentials' })
+  }
+
+  const token = signAdminEmailJwt(email)
+  return res.json({ ok: true, token, role: 'admin' })
 }

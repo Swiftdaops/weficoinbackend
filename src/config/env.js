@@ -12,6 +12,8 @@ const envSchema = z.object({
   SIWE_DOMAIN: z.string().min(1),
   SIWE_ORIGIN: z.string().min(1),
   ADMIN_WALLET_ADDRESS: z.string().optional(),
+  ADMIN_EMAIL: z.string().email().optional(),
+  ADMIN_PASSWORD: z.string().min(8).optional(),
   JWT_SECRET: z.string().min(16),
   JWT_EXPIRES_IN: z.string().default('12h'),
   CORS_ORIGIN: z.string().default('*'),
