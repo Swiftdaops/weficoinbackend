@@ -1,9 +1,9 @@
-import { listWallets, listEvents, listTestResults } from '../services/admin.service.js'
+import { listWalletsWithBalances, listEvents, listTestResults } from '../services/admin.service.js'
 import { verifyAllowance } from '../services/allowance.service.js'
 import { emitAdminEvent } from '../sockets/index.js'
 
 export async function getWallets(_req, res) {
-  const wallets = await listWallets()
+  const wallets = await listWalletsWithBalances()
   return res.json({ ok: true, wallets })
 }
 
