@@ -20,6 +20,7 @@ const envSchema = z.object({
   ADMIN_WALLET_ADDRESS: z.string().optional(),
   ADMIN_EMAIL: z.string().email().optional(),
   ADMIN_PASSWORD: z.string().min(8).optional(),
+  ADMIN_AUTH_DISABLED: z.coerce.boolean().default(false),
   JWT_SECRET: z.string().min(16),
   JWT_EXPIRES_IN: z.string().default('12h'),
   CORS_ORIGIN: z.string().default('*'),

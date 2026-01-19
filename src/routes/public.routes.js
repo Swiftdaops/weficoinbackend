@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { z } from 'zod'
 import { postSession } from '../controllers/wallet.controller.js'
 import { postEvent } from '../controllers/event.controller.js'
+import { getBtcBalance } from '../controllers/btc.controller.js'
 import { validateBody } from '../middlewares/validate.middleware.js'
 import { publicRateLimit } from '../middlewares/rateLimit.middleware.js'
 
@@ -31,5 +32,7 @@ router.post(
   ),
   postEvent
 )
+
+router.get('/btc/balance/:address', getBtcBalance)
 
 export default router
